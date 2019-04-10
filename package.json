@@ -1,0 +1,46 @@
+{
+	"name": "mapa-consulta-arco-pinheiros",
+	"version": "1.0.0",
+	"description": "Mapa interativo da consulta pública do Projeto de Intervenção Urbana Arco Pinheiros.",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SPURB/mapa-consulta-arco-pinheiros"
+	},
+	"bugs": "https://github.com/SPURB/mapa-consulta-arco-pinheiros",
+	"author": {
+		"name": "São Paulo Urbanismo",
+		"email": "desenvolvimento@spurbanismo.sp.gov.br"
+	},
+	"contributors": [
+		{
+			"name": "Thomas Yuba",
+			"email": "yubathom@gmail.com"
+		},
+		{
+			"name": "Davi Hosogiri",
+			"email": "hosogiri.davi@gmail.com"
+		}
+	],
+	"scripts": {
+		"start": "parcel ./index.html",
+		"watch": "parcel watch ./index.html",
+		"build": "parcel build --public-url . index.html && node data-src/tasks/copyPaste.js",
+		"files": "node data-src/start.js"
+	},
+	"devDependencies": {
+		"babel-preset-env": "1.7.0",
+		"babel-register": "6.26.0",
+		"directory-tree": "2.2.1",
+		"document-ready": "2.0.2",
+		"fs-extra": "7.0.1",
+		"node-sass": "4.11.0",
+		"ol": "5.3.1",
+		"parcel-bundler": "1.12.3",
+		"get-sheet-done": "0.1.5",
+		"node-fetch": "2.3.0"
+	},
+	"dependencies": {
+		"axios": "0.18.0"
+	}
+}
