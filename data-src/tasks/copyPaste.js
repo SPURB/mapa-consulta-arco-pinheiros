@@ -1,14 +1,16 @@
 var fs = require("fs-extra");
  
 function copyPaste(source, destination) {
-	var destinationPath =  __dirname.replace('data-src', destination)
+	var destinationPath =  __dirname
+		.replace('tasks', '')
+		.replace('data-src', destination)
 
 	fs.copy(source, destinationPath, function (err) {
 		if (err){
-			console.log('An error occured while copying the folder.')
+			console.log('Um erro ocorreu ao copiar o dirtetório.')
 			return console.error(err)
 		}
-		console.log('Copy completed!')
+		console.log('Cópia concluída! Diretório criado em ' + destinationPath)
 	})
 }
 

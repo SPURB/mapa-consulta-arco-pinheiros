@@ -52,7 +52,8 @@ function returnBases(projeto, otherProjetos, app_url, idColors, bing){
 		if(file.extension === '.kml'){
 			kmlLayers.unshift({
 				layer: setLayer(file, path, projeto, {
-					lineDash: [5],
+					// lineDash: [5],
+					width: 1.5,
 					color: color
 				})
 			})
@@ -84,7 +85,7 @@ function returnBases(projeto, otherProjetos, app_url, idColors, bing){
 			title:"Base Bing Maps",
 			source: new BingMaps({
 			//https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-a-static-map
-			imagerySet: 'CanvasGray', // Aerial, AerialWithLabels, AerialWithLabelsOnDemand, CanvasDark, CanvasLight, CanvasGray, Road, Streetside 
+			imagerySet: 'AerialWithLabels', // Aerial, AerialWithLabels, AerialWithLabelsOnDemand, CanvasDark, CanvasLight, CanvasGray, Road, Streetside 
 			culture: 'pt-BR',
 			key: process.env.BING_API_KEY,
 			type: 'base'

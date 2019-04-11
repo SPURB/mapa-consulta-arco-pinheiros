@@ -150,7 +150,7 @@ function layersController(listCreated, projectLayers, layerColors, view, fitPadd
 			}
 			createInfo(dataSheetitem, colors, path(images))
 			fitToId(view, layer, fitPadding)
-			displayKmlInfo(layer.values_)
+			displayKmlInfo(layer)
 
 			// Setup commentBox 
 			if (!state.projectSelected) { // Create element and event only once

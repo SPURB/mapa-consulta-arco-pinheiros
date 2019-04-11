@@ -130,21 +130,6 @@ function fitToId(view, layer, padding){
 	}
 }
 
-// function fitToNewId(appmap, indicador, padding, indicadorBase) {
-// 	const layers = appmap.getLayers().getArray()
-// 	const clickedLayer = layers.find(layer => layer.get('projectIndicador') === indicador)
-// 	const extent = clickedLayer.getSource().getExtent()
-
-// 	if(extent[0]!==Infinity) appmap.getView().fit(extent, { padding: padding })
-
-// 	else {
-// 		const baseLayer = layers.find(baseLay => baseLay.get('projectIndicador') === indicadorBase)
-// 		const baseExtent =  baseLayer.getSource().getExtent()
-// 		appmap.getView().fit(baseExtent, { padding: padding })
-// 		console.error(new Error())
-// 	}
-// }
-
 /** 
 Switch layer
 * @param  { Object } layer The layer to change the state
@@ -174,9 +159,13 @@ function switchlayers(state, layers, map){
 
 /** 
 * Create info-kml data
-* @param  { Object } kmlAttributes The kml attributes
+* @param  { Object } layer The kml attributes
 */
-function displayKmlInfo(kmlAttributes) {
+function displayKmlInfo(layer) {
+
+
+	const kmlAttributes = layer.values_
+
 	const exceptions = [
 		'SubClasses', 
 		'EntityHand', 

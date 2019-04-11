@@ -45,7 +45,7 @@ docReady(() => {
 		idConsulta: 41, // id_consulta
 		baseLayerObj: {id: 0, indicador: 'A1' }, // project main layer id,
 		baseLayerObjects: [], // other bases. ex. -> {id: 202, indicador: 'A34'},
-		bing: true,
+		bing: false,
 		appUrl: process.env.APP_URL
 	}
 
