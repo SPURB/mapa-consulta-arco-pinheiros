@@ -33,7 +33,7 @@ function returnSimples(projetos, simples, app_url, cores){
 	let isDashed = dashed => dashedLayers.includes(dashed)
 	let isFilled = filled => filledLayers.includes(filled)
 	let isBigWid = bigger => biggerWidths.includes(bigger)
-	let isPattrn = pattern => patternLayers.find(object => object.indicador.includes(pattern))
+	let isPattrn = pattern => patternLayers.find(object => object.indicador === pattern)
 
 	validObjs.forEach(valid => {
 		const files = projetos.find(obj => obj.id === valid.id)
@@ -53,13 +53,13 @@ function returnSimples(projetos, simples, app_url, cores){
 					if(isBigWid(valid.indicador)) { customStyles.width = 5  }
 
 
-					if(!pattern || valid.indicador === 'A3'){ // NÃO ENTENDI A BIZARRICE QUE ACONTECE COM 'A3'
+					if(!pattern || pattern === undefined){
 						kmlLayers.push({
 							layer: setLayer(valid.name, url, {id: valid.id, indicador: valid.indicador}, customStyles)
 						})
 					}
 
-					if(pattern && valid.indicador !== 'A3') {
+					if(pattern) {
 						kmlLayers.push({
 							layer: setPatternLayer(valid.name, url, {id: valid.id, indicador: valid.indicador}, pattern.type)
 						})
