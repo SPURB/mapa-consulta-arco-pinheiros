@@ -1,10 +1,47 @@
 import { Vector as VectorLayer } from 'ol/layer'
 import VectorSource from 'ol/source/Vector.js'
+import LayerGroup from 'ol/layer/Group';
 import { DEVICE_PIXEL_RATIO as pixelRatio } from 'ol/has.js'
 import KML from 'ol/format/KML'
 import Style from 'ol/style/Style'
 import Stroke from 'ol/style/Stroke'
 import Fill from 'ol/style/Fill'
+
+/**
+ * Return open layer group with two overlaped layers
+ * @param { String } name Layer name
+ * @param { String } path kml file complete path
+ * @param { Object } project project.id -> Kml numerical id | project.indicador -> Layer (indicador) numerical id
+ * @param { Array } lines Array of Objects -> { width -> Number, color -> [ r, g, b, a ] }
+ * @param { String } lineCap Open layer Stroke option, see 'lineCap'. Acceptables: 'butt', 'round', 'square' https://openlayers.org/en/latest/apidoc/module-ol_style_Stroke.html#~Options 
+ * @returns { Object } Open Layer new Vector instance
+ */
+function setTwoStrokes(name, path, project, lines, lineCap, lineDash = false) {
+	const source = new VectorSource({
+		url: path,
+		format: new KML({ extractStyles: false })
+	})
+
+	const styles = lines
+		.map(line => {
+			return new Style ({
+				stroke: new Stroke({
+					width: line.width,
+					color: line.color,
+					lineCap: lineCap,
+					lineDash: lineDash
+				})
+			})
+		})
+
+	return new VectorLayer ({
+		name: name,
+		source: source,
+		projectId: project.id,
+		projectIndicador: project.indicador,
+		style: styles
+	})
+}
 
 /**
  * Return open layer source and file from kml file
@@ -25,6 +62,9 @@ function setPatternLayer(name, path, project, type){
 		context.beginPath()
 
 		if(type === 'lines-crossed'){
+			canvas.width = 12 * pixelRatio
+			canvas.height = 12 * pixelRatio
+
 			context.moveTo(0, 0)
 			context.lineTo(canvas.width, canvas.height)
 			context.stroke()
@@ -50,6 +90,10 @@ function setPatternLayer(name, path, project, type){
 			context.arc(4 * pixelRatio, 4 * pixelRatio, 1.5 * pixelRatio, 0, 2 * Math.PI)
 			context.fill()
 		}
+		if(type === 'balls'){ // inner circle
+			context.arc(4 * pixelRatio, 4 * pixelRatio, 3 * pixelRatio, 0, 2 * Math.PI)
+			context.stroke()
+		}
 
 		return context.createPattern(canvas, 'repeat')
 	}())
@@ -59,7 +103,7 @@ function setPatternLayer(name, path, project, type){
 		let style = new Style({
 			stroke: new Stroke({
 				color: [0, 0, 0, 1],
-				width: .5,
+				width: 1,
 			}),
 			fill: new Fill({
 				color: pattern
@@ -80,6 +124,7 @@ function setPatternLayer(name, path, project, type){
 		projectId: project.id, // !!! this is important !!!,
 		projectIndicador: project.indicador
 	})
+
 }
 
 /**
@@ -141,6 +186,7 @@ function getProjectData(id, colocalizados){
 
 export{ 
 	setLayer,
+	setTwoStrokes,
 	setPatternLayer,
 	getProjectData
 }
