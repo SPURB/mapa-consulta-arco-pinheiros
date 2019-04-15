@@ -4,8 +4,8 @@ require('babel-register')({
 })
 
 // Import the rest of our application.
-module.exports = require('./tasks/setupEnv.js')
-module.exports = require('./tasks/projetos.js')
+// module.exports = require('./tasks/setupEnv.js')
+// module.exports = require('./tasks/projetos.js')
 module.exports = require('./tasks/mapas.js')
-module.exports = require('./tasks/simples.js') //create simples.json and bases.json
-module.exports = require('./tasks/cores.js')
+// module.exports = require('./tasks/simples.js') //create simples.json and bases.json
+// module.exports = require('./tasks/cores.js')

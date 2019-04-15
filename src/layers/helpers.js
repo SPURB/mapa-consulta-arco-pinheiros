@@ -1,14 +1,40 @@
 import { Vector as VectorLayer } from 'ol/layer'
 import VectorSource from 'ol/source/Vector.js'
-import LayerGroup from 'ol/layer/Group';
 import { DEVICE_PIXEL_RATIO as pixelRatio } from 'ol/has.js'
 import KML from 'ol/format/KML'
-import Style from 'ol/style/Style'
-import Stroke from 'ol/style/Stroke'
-import Fill from 'ol/style/Fill'
+import { Style, Icon, Stroke, Fill } from 'ol/style'
 
 /**
- * Return open layer group with two overlaped layers
+ * 
+ * @param {String} name The Layer name
+ * @param {String} path The KML source path
+ * @param { Object } project project.id -> Kml numerical id | project.indicador -> Layer (indicador) numerical id
+ * @param {String} icon The icon path
+ * @returns { Object } Open Layer new Vector instance
+ */
+function setIconLayer (name, path, project, icon){
+	const source = new VectorSource ({
+		url: path, 
+		format: new KML ({ extractStyles: false })
+	})
+
+	const style = new Style({
+		image: new Icon({
+			src: icon
+		})
+	})
+
+	return new VectorLayer({
+		name: name,
+		source: source,
+		projectId: project.id,
+		projectIndicador: project.indicador,
+		style: style
+	})
+}
+
+/**
+ * Return open layer with two overlaped layers
  * @param { String } name Layer name
  * @param { String } path kml file complete path
  * @param { Object } project project.id -> Kml numerical id | project.indicador -> Layer (indicador) numerical id
@@ -48,17 +74,18 @@ function setTwoStrokes(name, path, project, lines, lineCap, lineDash = false) {
  * @param { String } name Layer name
  * @param { String } path kml file complete path
  * @param { Object } project project.id -> Kml numerical id | project.indicador -> Layer (indicador) numerical id
- * @param { String } type the Pattern type valid -> 'lines-crossed', 'lines-vertical', 'lines-horizontal' or 'dots'
+ * @param { String } type the Pattern type valid -> 'lines-crossed', 'lines-diagonal', 'lines-vertical', 'lines-horizontal' or 'dots'
+ * @param { Array } fillStyle Set the line color. Optional [r,g,b,a]
  * @returns { Object } Open Layer new Vector instance
  */
-function setPatternLayer(name, path, project, type){
+function setPatternLayer(name, path, project, type, fillStyle = [0, 0, 0, 1]){
 	const canvas = document.createElement('canvas')
 	const context = canvas.getContext('2d')
 
 	const pattern = (function() {
 		canvas.width = 8 * pixelRatio
 		canvas.height = 8 * pixelRatio
-		context.fillStyle = 'rgb(0, 0, 0)'
+		context.fillStyle = `rgb(${fillStyle[0]}, ${fillStyle[1]}, ${fillStyle[2]})`
 		context.beginPath()
 
 		if(type === 'lines-crossed'){
@@ -75,6 +102,17 @@ function setPatternLayer(name, path, project, type){
 			context.stroke()
 
 		}
+		if(type === 'lines-diagonal'){
+			context.fillRect(0, 0, canvas.width, canvas.height)
+
+			context.lineWidth = 1.5
+			context.moveTo(canvas.width, 0)
+			context.lineTo(0, canvas.height)
+			context.strokeStyle = `rgba(255, 255, 255, 0.5)`
+			context.lineCap = 'square'
+			context.stroke()
+		}
+
 		if(type === 'lines-vertical'){
 			context.moveTo(canvas.width/2, 0)
 			context.lineTo(canvas.width/2, canvas.height)
@@ -98,11 +136,10 @@ function setPatternLayer(name, path, project, type){
 		return context.createPattern(canvas, 'repeat')
 	}())
 
-
-	let getStackedStyle = feature => {
+	let getStackedStyle = () => {
 		let style = new Style({
 			stroke: new Stroke({
-				color: [0, 0, 0, 1],
+				color: fillStyle,
 				width: 1,
 			}),
 			fill: new Fill({
@@ -121,7 +158,7 @@ function setPatternLayer(name, path, project, type){
 		title: name,
 		source: source,
 		style: getStackedStyle,
-		projectId: project.id, // !!! this is important !!!,
+		projectId: project.id,
 		projectIndicador: project.indicador
 	})
 
@@ -188,5 +225,6 @@ export{
 	setLayer,
 	setTwoStrokes,
 	setPatternLayer,
+	setIconLayer,
 	getProjectData
 }

@@ -1,5 +1,8 @@
-import { setLayer, setTwoStrokes, setPatternLayer } from './helpers'
-
+import { setLayer, setTwoStrokes, setPatternLayer, setIconLayer } from './helpers'
+import habPrecarios from '../img/hab-precarios.svg'
+import habProvisao from '../img/hab-provisao.svg'
+import habCota from '../img/hab-cota.png'
+import equipamentos from '../img/equipamentos.svg'
 
 /**
 * Create all layers for app
@@ -20,10 +23,11 @@ function returnSimples(projetos, simples, app_url, cores){
 		})
 	} })
 
+
 	const dashedLayers = []
-	const bigDots 	   = [  'A21' ]
-	const filledLayers = [ 'A2', 'A3', 'A22','A23','A24','A25','A26','A27','A28','A34', 'A35' ]
-	const biggerWidths = [ 'A6' ]
+	const bigDots 	   = [ 'A21' ]
+	const filledLayers = [ 'A2', 'A3', 'A20', 'A22','A23','A24','A25','A26','A27','A28','A34', 'A35', 'A29', 'A30', 'A31', 'A32', 'A33' ]
+	const biggerWidths = [ 'A6', 'A18' ]
 	const twoStrokes   = [ 
 		{ indicador: 'A7', type: 'butt', lineDash: [ 15 ] },
 		{ indicador: 'A8', type: 'butt' },
@@ -34,7 +38,14 @@ function returnSimples(projetos, simples, app_url, cores){
 		{ indicador: 'A36', type:'lines-crossed' }, // ZEIS 1
 		{ indicador: 'A37', type:'lines-vertical' }, // ZEIS 2
 		{ indicador: 'A38', type:'lines-horizontal' }, // ZEIS 3
-		{ indicador: 'A39', type:'balls' } // ZEIS 5
+		{ indicador: 'A39', type:'balls' }, // ZEIS 5
+		{ indicador: 'A19', type: 'lines-diagonal', color: cores['A19'] }
+	]
+	const iconLayers = [ 
+		{ indicador: 'A13', icon: habPrecarios },
+		{ indicador: 'A14', icon: habProvisao },
+		{ indicador: 'A15', icon: habCota },
+		{ indicador: 'A16', icon: equipamentos }
 	]
 
 	let isDashed = dashed => dashedLayers.includes(dashed)
@@ -43,6 +54,7 @@ function returnSimples(projetos, simples, app_url, cores){
 	let isBigWid = bigger => biggerWidths.includes(bigger)
 	let isTwoStr = stroke => twoStrokes.find(object => object.indicador === stroke)
 	let isPattrn = pattern => patternLayers.find(object => object.indicador === pattern)
+	let isIconUs = icon => iconLayers.find(object => object.indicador === icon)
 
 	validObjs.forEach(valid => {
 		const files = projetos.find(obj => obj.id === valid.id)
@@ -52,6 +64,7 @@ function returnSimples(projetos, simples, app_url, cores){
 				const url = app_url + file.path
 				const pattern = isPattrn(indicador)
 				const twoStrs = isTwoStr(indicador)
+				const icon = isIconUs(indicador)
 
 				if(file.extension === '.kml') {
 					const rgba = cores[indicador]
@@ -82,8 +95,13 @@ function returnSimples(projetos, simples, app_url, cores){
 							)
 						kmlLayers.push(output)
 					}
-					if(pattern) { kmlLayers.push(setPatternLayer(name, url, projeto, pattern.type))}
-					if(!pattern || !twoStrs ){ kmlLayers.push(setLayer(name, url, projeto, customStyles))}
+					if(icon) { kmlLayers.push(setIconLayer(name, url, projeto, icon.icon)) }
+					if(pattern) {
+						pattern.color ? 
+						kmlLayers.push(setPatternLayer(name, url, projeto, pattern.type, pattern.color)) :
+						kmlLayers.push(setPatternLayer(name, url, projeto, pattern.type))
+					}
+					if(!pattern || !twoStrs || !icon ){ kmlLayers.push(setLayer(name, url, projeto, customStyles))}
 				}
 			})
 		}

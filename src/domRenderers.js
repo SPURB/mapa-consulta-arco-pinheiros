@@ -1,6 +1,7 @@
 import { containsExtent } from 'ol/extent'
 import { responseMessageListener } from './eventListeners'
-import { mapaData } from './model';
+import { mapaData } from './model'
+import seta from './img/seta.svg'
 
 /**
 * Filter projetos removing base layers
@@ -54,7 +55,7 @@ function createMapsBtns(buttonsContentArray, query, idPrefix){
 					${buttonObject.name}
 					<span>${buttonObject.descricao}</span>
 				</button>
-				<img src="` + process.env.APP_URL + `src/img/seta.svg" alt="Abrir">
+				<img src='${seta}' alt="Abrir">
 			</li>
 		`
 		}
@@ -300,22 +301,11 @@ function createInfo(data, projectColor, path = false) {
 
 	concatenation += `<div class='info-legend' style='${concatColor}'></div>`
 	concatenation += "<div class='data' id='projectData'>"
-	function findLinks(str) {
-		// let links = []
-		// let newstr = ''
-		// links.push(str.substring(str.indexOf('', str.indexOf('http'))))
-		// // console.log(links)
-		// links.forEach(link => {
-		// 	newstr = str.replace(str.slice(str.indexOf('', str.indexOf('http'))), '<a href="' + link + '">este link</a>')
-		// // })
-		// // return newstr
-		return str
-	}
 	for(let val in data){
 		if(data[val] !== 0) {
 			switch(val) {
 				case 'NOME': concatenation += `<h4 class='project-title'>${data[val]}</h4>`; break
-				case 'DESCRIÇÃO': concatenation += `<p class='description'>` + findLinks(data[val]) + `</p>`; break
+				case 'DESCRIÇÃO': concatenation += `<p class='description'>${data[val]}`; break
 				case 'ANO': concatenation += `<p class='ano'>Início <span>${data[val]}</span></p>`; break
 				case 'SECRETARIA': concatenation += `<p class='secretaria'>Responsável <span>${data[val]}</span></p>`; break
 				case 'STATUS': concatenation += `<p class='status'>Status <span>${data[val]}</span></p>`; break

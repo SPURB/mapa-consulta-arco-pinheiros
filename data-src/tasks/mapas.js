@@ -53,8 +53,11 @@ function mapas(){
 							item.descricao = outPutObject[item.id].descricao
 							return item
 						})
-					createFile(mapsArrayWithNames, './data-src/json/mapas.json')
+					// 
+					// console.log(mapsArrayWithNames)
+					return mapsArrayWithNames
 				})
+				.then(maps => createFile(maps, './data-src/json/mapas.json'))
 		})
 		.catch(err => console.error(err)
 	)
