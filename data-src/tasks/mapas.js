@@ -25,7 +25,6 @@ function mapas(){
 					.filter(layer => layer.ID === id)
 					.map(layer => layer.INDICADOR)
 				output.push({
-					//'nome': nome,
 					'id': id,
 					'layers': layers
 				})
