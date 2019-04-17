@@ -38,39 +38,27 @@ import {
 	mapObserver,
 	layersController,
 } from './eventListeners'
-import { async } from 'q';
 
 docReady(() => {
 	let state = {
 		projectSelected: false, // project clicked at map or right sidebar?
 		mapSelected: false,
 		idConsulta: 41, // id_consulta
-		consultaFetch: false,
-		// isOpen: 0, // ativo. this is reseted by addCommentBox after first fetch
-		baseLayerObj: {id: 0, indicador: 'A1' }, // project main layer id,
+		consultaFetch: false, // the Consultas table data from fetch. This is setted by addCommentBox after first load
+		baseLayerObj: { id: 0, indicador: 'A1' }, // project main layer id,
 		baseLayerObjects: [], // other bases. ex. -> {id: 202, indicador: 'A34'},
 		bing: true,
 		appUrl: process.env.APP_URL
 	}
 
 	const baseInfos = createBaseInfos(projetos, state.baseLayerObj.id, state.baseLayerObjects)
-	const baseLayers = returnBases({
-			info: baseInfos.info,
-			id: state.baseLayerObj.id,
-			indicador: state.baseLayerObj.indicador
-		},
-		baseInfos.infos,
-		state.appUrl,
-		cores,
-		state.bing
-	) // open layer's BASE's layers
+	const baseLayers = returnBases({ info: baseInfos.info, id: state.baseLayerObj.id, indicador: state.baseLayerObj.indicador }, baseInfos.infos, state.appUrl, cores, state.bing ) // open layer's BASE's layers
 	const baseLayer = baseLayers.find(layer => layer.values_.projectIndicador === state.baseLayerObj.indicador)
 	const simplesLayers = returnSimples(projetos, simples, state.appUrl, cores)
 
 	const allLayers = [ ...simplesLayers ]
 	const allLayersData = [ ...simples.default ]
-	let indicadoresBases = state.baseLayerObjects
-		.map(item => item.indicador )
+	let indicadoresBases = state.baseLayerObjects.map( item => item.indicador )
 	indicadoresBases.unshift(state.baseLayerObj.indicador)
 
 	const isPortrait = window.matchMedia("(orientation: portrait)").matches // Boolean -> innerHeight < innerWidth

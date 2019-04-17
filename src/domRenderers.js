@@ -303,8 +303,8 @@ function createInfo(data, projectColor, path = false) {
 			switch(val) {
 				case 'NOME': concatenation += `<h4 class='project-title'>${data[val]}</h4>`; break
 				case 'DESCRIÇÃO': concatenation += `<p class='description'>${data[val]}`; break
-				case 'ANO': concatenation += `<p class='ano'>Início <span>${data[val]}</span></p>`; break
-				case 'SECRETARIA': concatenation += `<p class='secretaria'>Responsável <span>${data[val]}</span></p>`; break
+				// case 'ANO': concatenation += `<p class='ano'>Início <span>${data[val]}</span></p>`; break
+				// case 'SECRETARIA': concatenation += `<p class='secretaria'>Responsável <span>${data[val]}</span></p>`; break
 				case 'STATUS': concatenation += `<p class='status'>Status <span>${data[val]}</span></p>`; break
 				default: concatenation += ''
 			}
@@ -358,8 +358,8 @@ function createBaseInfo(data, projetos) {
 			const dado = data[val]	
 			if(dado !== 0){
 				switch (val) {
-					case 'ANO': concatenation += `<p class='ano'>Início <span>${dado}</span></p>`; break
-					case 'SECRETARIA': concatenation += `<p class='secretaria'>Responsável <span>${dado}</span></p>`; break
+					// case 'ANO': concatenation += `<p class='ano'>Início <span>${dado}</span></p>`; break
+					// case 'SECRETARIA': concatenation += `<p class='secretaria'>Responsável <span>${dado}</span></p>`; break
 					case 'STATUS': concatenation += `<p class='status'>Status <span>${dado}</span></p>`; break
 					default: concatenation += ''
 				}
