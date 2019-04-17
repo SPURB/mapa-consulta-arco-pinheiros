@@ -163,10 +163,7 @@ function switchlayers(state, layers, map){
 * @param  { Object } layer The kml attributes
 */
 function displayKmlInfo(layer) {
-
-
 	const kmlAttributes = layer.values_
-
 	const exceptions = [
 		'SubClasses', 
 		'EntityHand', 
@@ -378,11 +375,11 @@ function createBaseInfo(data, projetos) {
 * Create commentable form
 * @param { String } query The element query selector to inject the form
 * @param { Boolean } isProject Project was selected? -> state.projectSelected
+* @param { Boolean } isOpen Is this form open?
 * @returns { HTMLDivElement } Them commentable box
 */
-function createCommentBox (query, isProject) {
-
-	if(isProject || document.body.contains(document.forms[query])) { return } // Stop function if project info box already created
+function createCommentBox (query, isProject, isOpen = true) {
+	if(!isOpen || isProject || document.body.contains(document.forms[query])) { return }
 
 	const emailPattern = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
 	const commentBox = `

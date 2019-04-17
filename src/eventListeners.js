@@ -152,13 +152,13 @@ function layersController(listCreated, projectLayers, layerColors, view, fitPadd
 			fitToId(view, layer, fitPadding)
 			displayKmlInfo(layer)
 
-			// Setup commentBox 
-			if (!state.projectSelected) { // Create element and event only once
+			if (!state.projectSelected && state.consultaFetch.ativo === '1') { // Create element and event only once if consulta is active
 				createCommentBox('infoComments', false)
 				commentBoxEvents('infoComments')
 			}
 			resetEventListener(document.getElementById('infoComments-submit')) // recreate the button to reset eventListener at every click
-			commentBoxSubmit('infoComments', state.idConsulta, data.ID, data.NOME) // change listener attributes at every click
+			
+			commentBoxSubmit('infoComments', state.idConsulta, dataSheetitem.ID, dataSheetitem.NOME) // change listener attributes at every click
 		}
 	})
 }
@@ -282,6 +282,9 @@ function resetEventListener(element){
 * @returns { EventListener } Event listener to #idBase-submit button
 */
 function commentBoxSubmit(idBase, idConsulta, commentid, commentcontext) {
+	if(commentid === undefined) console.error(`commentid is ${commentid}`)
+	if(!commentcontext) console.error(`commentid is ${commentcontext}`)
+
 	let formErrors = []
 
 	const submitBtnId = `${idBase}-submit` 
@@ -364,7 +367,6 @@ function fieldErrors(field){
 
 	let message = field.title ? field.title : 'Campo inválido'
 
-	// console.log(validity)
 	// badInput, customError, patternMismatch, rangeOverflow, rangeUnderflow, stepMismatch, tooLong, tooShort, typeMismatch, valid, valueMissing
 	const messagesComplements = [
 		['badInput', 'Padrão inválido'],
@@ -419,7 +421,6 @@ export {
 	resetEventListener,
 	mapsBtnClickEvent,
 	toggleMapMobile, 
-	// onLayerChange,
 	fieldErrors, 
 	sidebarGoHome, 
 	sidebarNavigate, 
@@ -427,6 +428,5 @@ export {
 	closeObjectInfo, 
 	mapObserver,
 	layersController,
-	// menuEvents,
 	responseMessageListener
 }

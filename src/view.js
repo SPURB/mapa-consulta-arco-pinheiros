@@ -6,12 +6,13 @@ import { ScaleLine, ZoomSlider} from 'ol/control'
 import { getProjectData } from './layers/helpers'
 import { createBaseInfos, returnBases } from './layers/bases'
 import { returnSimples } from './layers/simples'
-import { 
+import {
 	projetos,
 	mapaData,
 	simples,
 	cores,
-	bases
+	bases,
+	apiGet
 } from './model'
 
 import {
@@ -37,12 +38,15 @@ import {
 	mapObserver,
 	layersController,
 } from './eventListeners'
+import { async } from 'q';
 
 docReady(() => {
 	let state = {
 		projectSelected: false, // project clicked at map or right sidebar?
 		mapSelected: false,
 		idConsulta: 41, // id_consulta
+		consultaFetch: false,
+		// isOpen: 0, // ativo. this is reseted by addCommentBox after first fetch
 		baseLayerObj: {id: 0, indicador: 'A1' }, // project main layer id,
 		baseLayerObjects: [], // other bases. ex. -> {id: 202, indicador: 'A34'},
 		bing: true,
@@ -54,7 +58,7 @@ docReady(() => {
 			info: baseInfos.info,
 			id: state.baseLayerObj.id,
 			indicador: state.baseLayerObj.indicador
-		}, 
+		},
 		baseInfos.infos,
 		state.appUrl,
 		cores,
@@ -92,41 +96,49 @@ docReady(() => {
 	/*
 	* Create DOM elements
 	*/
-	const addPannels = new Promise ( (resolve, reject) => {
+	const addPannels = new Promise (resolve => {
 		setTimeout(() => {
-			try { 
-				resolve(
-					createBaseInfo(getProjectData(state.baseLayerObj.id, bases), projetos), // sidebar first load
-					createList(allLayersData, cores),
-					createMapsBtns(mapaData, "#mapas", "mapas-")
-				)
-			}
-			catch (error) { reject(error) }
-			
+			resolve(
+				createBaseInfo(getProjectData(state.baseLayerObj.id, bases), projetos), // sidebar first load
+				createList(allLayersData, cores),
+				createMapsBtns(mapaData, "#mapas", "mapas-")
+			)
 		},0)
 	})
 
-	const addCommentBox = new Promise ((resolve, reject) => {
-		setTimeout(() => {
-			try { resolve ( createCommentBox("baseInfo", state.projectSelected) ) }
-			catch (error) { reject(error) }
-		}, 0)
-	})
+	const addCommentBox = apiGet('consultas', state.idConsulta) //fetch from api
+		.then(consulta => {
+			const isOpen = Number(consulta.ativo) // consulta.ativo is '0' or '1'
+			state.consultaFetch = consulta
+			createCommentBox("baseInfo", state.projectSelected, isOpen)
+
+			// mapsBtnClickEvent(mapaData,"#mapas", appmap, allLayers, indicadoresBases, state, baseLayer)
+
+
+			return isOpen
+		})
+		.then(formState => {
+			if(formState) {
+				commentBoxEvents('baseInfo'),
+				commentBoxSubmit('baseInfo', state.idConsulta, 0, 'Mapa base')
+			}		
+		})
+		.catch(error => error)
 
 	/*
 	* Event listeners
 	*/
-	const commentBoxListeners = new Promise ((resolve, reject) => {
-		setTimeout(() => {
-			try {
-					resolve(
-						commentBoxEvents('baseInfo'),
-						commentBoxSubmit('baseInfo', state.idConsulta, 2, 'Mapa base')
-					)
-				}
-			catch(error) { reject(error) }
-		}, 1)
-	})
+	// const commentBoxListeners = new Promise ((resolve, reject) => {
+	// 	setTimeout(() => {
+	// 		try {
+	// 				resolve(
+	// 					commentBoxEvents('baseInfo'),
+	// 					commentBoxSubmit('baseInfo', state.idConsulta, 0, 'Mapa base')
+	// 				)
+	// 			}
+	// 		catch(error) { reject(error) }
+	// 	}, 1)
+	// })
 
 	/*
 	* Create all other event listeners
@@ -176,10 +188,22 @@ docReady(() => {
 
 			switchlayers(true, validLayers, appmap)
 			createMapInfo(mapDataLocated)
-			createCommentBox("mapInfoCommentbox", state.mapSelected)
+
+			// <form mapas>
+			createCommentBox("mapInfoCommentbox", state.mapSelected, Number(state.consultaFetch.ativo))
+
 			state.mapSelected = true
 			sidebarNavigate(2)
 			document.getElementById('mapas-' + mapDataLocated.id).classList.add('active')
+		}
+		return mapDataLocated
+
+	})
+	.then(data => {
+		if (state.consultaFetch.ativo === '1'){
+			// <form mapas>
+			commentBoxEvents('mapInfoCommentbox'),
+			commentBoxSubmit('mapInfoCommentbox', state.idConsulta, data.id, data.name)
 		}
 	})
 
@@ -204,7 +228,6 @@ docReady(() => {
 	* Then chain event listeners
 	*/
 	.then( () => pannelListeners )
-	.then( () => commentBoxListeners )
 	/*
 	 * and map events
 	*/
@@ -212,6 +235,7 @@ docReady(() => {
 	.then( () => addControls )
 	// TODO: fetch comments of state.idConsulta
 	.catch( error => { 
+		console.error(error)
 		throw new Error(error)
 	})
 })
