@@ -323,6 +323,7 @@ function createInfo(data, projectColor, path = false) {
 function createMapInfo(mapData){
 	window.location.hash = mapData.id
 	document.getElementById('mapInfo').classList.remove('hidden')
+
 	let concatenation = ''
 	if(mapData.name === undefined && mapaData.legenda === undefined) { console.error(`${mapData}'s keys are undefined`) }
 	concatenation += `<h4 class="project-title">${mapData.name}</h4>`

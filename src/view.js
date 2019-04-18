@@ -38,6 +38,7 @@ import {
 	closeObjectInfo, 
 	mapObserver,
 	layersController,
+	tabsResetListeners
 } from './eventListeners'
 import seta from './img/seta.svg'
 
@@ -120,21 +121,6 @@ docReady(() => {
 		.catch(error => error)
 
 	/*
-	* Event listeners
-	*/
-	// const commentBoxListeners = new Promise ((resolve, reject) => {
-	// 	setTimeout(() => {
-	// 		try {
-	// 				resolve(
-	// 					commentBoxEvents('baseInfo'),
-	// 					commentBoxSubmit('baseInfo', state.idConsulta, 0, 'Mapa base')
-	// 				)
-	// 			}
-	// 		catch(error) { reject(error) }
-	// 	}, 1)
-	// })
-
-	/*
 	* Create all other event listeners
 	*/
 	let pannelListeners = new Promise( (resolve, reject) => {
@@ -143,11 +129,11 @@ docReady(() => {
 				resolve(
 					// sidebar
 					sidebarGoHome(allLayers, baseLayer, view, fitPadding, appmap),
-					sidebarNavigate(), 
+					sidebarNavigate(0),
 					sideBarToggleFonte(),
 					layersController(listCreated, allLayers, cores, view, fitPadding, state, appmap, allLayersData),
 					mapsBtnClickEvent(mapaData,"#mapas", appmap, allLayers, indicadoresBases, state, baseLayer),
-					closeObjectInfo('mapInfo', 'closeMapInfo'), 
+					closeObjectInfo('mapInfo', 'closeMapInfo'),
 					closeObjectInfo('info', 'closeInfo'),
 
 					// map
@@ -194,6 +180,9 @@ docReady(() => {
 
 	})
 	.then(data => {
+
+		tabsResetListeners(['baseInfo', 'legenda-projetos'], '#mapInfo')
+
 		if (state.consultaFetch.ativo === '1'){
 			// <form mapas>
 			commentBoxEvents('mapInfoCommentbox'),

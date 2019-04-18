@@ -11,6 +11,7 @@ import {
 	commentBoxDisplayErrors,
 	displayKmlInfo
 } from './domRenderers'
+import { create } from 'domain';
 
 /**
 * Sidebar - Render initial base layer info and resets map to the initial state
@@ -26,12 +27,14 @@ function sidebarGoHome (layers, baseLayer, view, fitPadding, map){
 
 /**
 * Sidebar -> navigate in tabs
-* @param { undefinded } - if no param is defined, navigate on clicks; if a number N is defined as param, the Nth child of '#tabContent' will be active
+* @param { Number } param - if no param is > 0, navigate on clicks; else a number N is defined as param, the Nth child of '#tabContent' will be active
+* @returns { EventListener } The menu #tabs eventListeners
 */
 function sidebarNavigate(param){
 	let tabs = document.getElementById('tabs')
 	let tabsArr = Array.from(tabs.children)
-	if (typeof(param) !== 'number') {
+
+	if (param === 0) {
 		tabs.addEventListener('click', (event) => {
 			tabsArr.map((index) => {
 				document.getElementById(index.getAttribute('data-id')).classList.add('hidden')
@@ -40,7 +43,7 @@ function sidebarNavigate(param){
 			document.getElementById(event.target.getAttribute('data-id')).classList.remove('hidden')
 			event.target.classList.add('active')
 		})
-	} else if (typeof(param) === 'number') {
+	} else if (param > 0) {
 		tabsArr.map((index) => {
 			index.classList.remove('active')
 			document.getElementById(index.getAttribute('data-id')).classList.add('hidden')
@@ -118,7 +121,7 @@ function layersController(listCreated, projectLayers, layerColors, view, fitPadd
 		gotoBtn.onclick = () => {
 			setInitialState('initial', 3)
 			const idKml = indicadores[indicador]
-			const data = projetos.find(projeto => projeto.id === idKml)
+			// const data = projetos.find(projeto => projeto.id === idKml)
 			const dataSheetitem = dataSheet.find(sheet => sheet.INDICADOR === indicador)
 			const colors = layerColors[indicador]
 			const images = getFiles(indicador, projetos, false, indicadores)
@@ -149,6 +152,7 @@ function layersController(listCreated, projectLayers, layerColors, view, fitPadd
 				else return false
 			}
 			createInfo(dataSheetitem, colors, path(images))
+			tabsResetListeners(['baseInfo', 'legenda-mapas'], '#info')
 			fitToId(view, layer, fitPadding)
 			displayKmlInfo(layer)
 
@@ -175,7 +179,7 @@ function layersController(listCreated, projectLayers, layerColors, view, fitPadd
  */
 function mapsBtnClickEvent(buttonsContentArray, query, olMap, allLayers, baseIndicadores, state, baseLayer) {
 	const buttons = [...document.querySelector(query).children] // [li, li ...]
-		.map(item => item)
+		// .map(item => item)
 
 	buttons.forEach(item => {
 		item.addEventListener('click', event => {
@@ -202,10 +206,28 @@ function mapsBtnClickEvent(buttonsContentArray, query, olMap, allLayers, baseInd
 
 			fitToId(olMap.getView(), baseLayer, state.fitPadding)
 			createMapInfo(contentNoLayers)
+			tabsResetListeners(['baseInfo', 'legenda-projetos'], '#mapInfo')
 			switchlayers(true, validLayers, olMap)
 			createCommentBox("mapInfoCommentbox", state.mapSelected)
 			resetEventListener(document.getElementById('mapInfoCommentbox-submit')) // recreate the button to reset eventListener at every click
 			commentBoxSubmit('mapInfoCommentbox', state.idConsulta, content.id, content.name) // change listener attributes at every click
+		})
+	})
+}
+
+/**
+ * 
+ * @param { Array } otherTabs The tab data-ids to add Event listener
+ * @param { String } elementToHide Some element to add 'hidden' class
+ * @returns { EventListener }
+ */
+function tabsResetListeners(otherTabs, elementToHide){
+	const inactiveTabs = otherTabs
+		.map(tab => document.querySelector(`[data-id=${tab}]`))
+		
+	inactiveTabs.forEach(inactiveTab => {
+		inactiveTab.addEventListener('click', () => {
+			document.querySelector(elementToHide).classList.add('hidden')
 		})
 	})
 }
@@ -428,5 +450,6 @@ export {
 	closeObjectInfo, 
 	mapObserver,
 	layersController,
+	tabsResetListeners,
 	responseMessageListener
 }
