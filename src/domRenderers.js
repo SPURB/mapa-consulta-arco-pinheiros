@@ -343,7 +343,6 @@ function createMapInfo(mapData){
 * Create initial info (images, strings) box with data from the larger projectgetProjectData 
 * @param { Object } data colocalizados.json item (return from getProjectData())
 */
-
 function createBaseInfo(data, projetos) {
 	let concatenation = ''
 	const nome = data.NOME
@@ -540,7 +539,6 @@ export {
 	switchVisibilityState,
 	switchlayers,
 	fitToId,
-	// fitToNewId,
 	smallerExtent,
 	getFiles,
 	createInfo,

@@ -26,11 +26,11 @@ function returnSimples(projetos, simples, app_url, cores){
 
 	const dashedLayers = []
 	const bigDots 	   = [ 'A21' ]
-	const filledLayers = [ 'A2', 'A3', 'A20', 'A22','A23','A24','A25','A26','A27','A28','A34', 'A35', 'A29', 'A30', 'A31', 'A32', 'A33' ]
+	const filledLayers = [ 'A2', 'A3', 'A20', 'A22','A23','A24','A25','A26','A27','A28','A34', 'A35', 'A29', 'A30', 'A31', 'A32', 'A33', 'A40','A41','A42' ]
 	const biggerWidths = [ 'A6', 'A18' ]
 	const twoStrokes   = [ 
 		{ indicador: 'A7', type: 'butt', lineDash: [ 15 ] },
-		{ indicador: 'A8', type: 'butt' },
+		{ indicador: 'A8', type: 'butt'},
 		{ indicador: 'A9', type: 'butt' },
 		{ indicador: 'A10', type: 'round' }
 	] // pontes, passarelas, cicilopassarelas (passagens)
@@ -77,6 +77,15 @@ function returnSimples(projetos, simples, app_url, cores){
 					if(isBigWid(indicador)) customStyles.width = 5
 
 					if(twoStrs) {
+						
+						// change thickness for bridges, footbridge and tunnels
+						let multiplier = 1;
+						switch (indicador) {
+							case 'A8': multiplier = 1.62; break
+							case 'A9': multiplier = 2.1; break
+							default: multiplier = 1
+						}
+
 						const output = twoStrs.lineDash ?
 							setTwoStrokes(
 								name, url, projeto, [
@@ -88,8 +97,8 @@ function returnSimples(projetos, simples, app_url, cores){
 							) :
 							setTwoStrokes(
 								name, url, projeto, [
-									{ width: 10, color: [ 0, 0, 0, 1 ] },
-									{ width: 6, color: rgba },
+									{ width: 5 * multiplier, color: [ 0, 0, 0, 1 ] },
+									{ width: 2 * multiplier, color: rgba },
 								],
 								twoStrs.type
 							)

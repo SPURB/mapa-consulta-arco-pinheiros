@@ -24,6 +24,7 @@ import {
 	fitToId,
 	createBaseInfo,
 	createCommentBox,
+	renderElement
 } from './domRenderers';
 
 import { 
@@ -38,6 +39,7 @@ import {
 	mapObserver,
 	layersController,
 } from './eventListeners'
+import seta from './img/seta.svg'
 
 docReady(() => {
 	let state = {
@@ -84,10 +86,14 @@ docReady(() => {
 	/*
 	* Create DOM elements
 	*/
+
+	
+
 	const addPannels = new Promise (resolve => {
 		setTimeout(() => {
 			resolve(
 				createBaseInfo(getProjectData(state.baseLayerObj.id, bases), projetos), // sidebar first load
+				renderElement(`<a href="${window.location.origin}/arco-pinheiros-2" class="go-back-participe"><img src='${seta}' alt='Voltar'>Texto da consulta</a>`, '#info-warnings'),
 				createList(allLayersData, cores),
 				createMapsBtns(mapaData, "#mapas", "mapas-")
 			)

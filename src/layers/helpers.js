@@ -86,7 +86,9 @@ function setPatternLayer(name, path, project, type, fillStyle = [0, 0, 0, 1]){
 		canvas.width = 8 * pixelRatio
 		canvas.height = 8 * pixelRatio
 		context.fillStyle = `rgb(${fillStyle[0]}, ${fillStyle[1]}, ${fillStyle[2]})`
+
 		context.beginPath()
+
 
 		if(type === 'lines-crossed'){
 			canvas.width = 12 * pixelRatio
@@ -94,17 +96,18 @@ function setPatternLayer(name, path, project, type, fillStyle = [0, 0, 0, 1]){
 
 			context.moveTo(0, 0)
 			context.lineTo(canvas.width, canvas.height)
+			context.strokeStyle = `rgba(0, 0, 0, 0.5)`
 			context.stroke()
 	
 			context.beginPath()
 			context.moveTo(canvas.width, 0)
 			context.lineTo(0, canvas.height)
+			context.strokeStyle = `rgba(0, 0, 0, 0.5)`
 			context.stroke()
 
 		}
 		if(type === 'lines-diagonal'){
 			context.fillRect(0, 0, canvas.width, canvas.height)
-
 			context.lineWidth = 1.5
 			context.moveTo(canvas.width, 0)
 			context.lineTo(0, canvas.height)
@@ -116,12 +119,14 @@ function setPatternLayer(name, path, project, type, fillStyle = [0, 0, 0, 1]){
 		if(type === 'lines-vertical'){
 			context.moveTo(canvas.width/2, 0)
 			context.lineTo(canvas.width/2, canvas.height)
+			context.strokeStyle = `rgba(0, 0, 0, 0.5)`
 			context.stroke()
 		}
 
 		if(type === 'lines-horizontal'){
 			context.moveTo(0, canvas.height/2)
 			context.lineTo(canvas.width, canvas.height/2)
+			context.strokeStyle = `rgba(0, 0, 0, 0.5)`
 			context.stroke()
 		}
 		if(type === 'dots'){ // inner circle
@@ -130,6 +135,7 @@ function setPatternLayer(name, path, project, type, fillStyle = [0, 0, 0, 1]){
 		}
 		if(type === 'balls'){ // inner circle
 			context.arc(4 * pixelRatio, 4 * pixelRatio, 3 * pixelRatio, 0, 2 * Math.PI)
+			context.strokeStyle = `rgba(0, 0, 0, 0.5)`
 			context.stroke()
 		}
 
@@ -139,7 +145,7 @@ function setPatternLayer(name, path, project, type, fillStyle = [0, 0, 0, 1]){
 	let getStackedStyle = () => {
 		let style = new Style({
 			stroke: new Stroke({
-				color: fillStyle,
+				color: `rgba(0, 0, 0, 0.5)`,
 				width: 1,
 			}),
 			fill: new Fill({
