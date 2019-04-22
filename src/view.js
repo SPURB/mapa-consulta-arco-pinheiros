@@ -24,12 +24,13 @@ import {
 	fitToId,
 	createBaseInfo,
 	createCommentBox,
-	renderElement
+	createGoBackParticipe
 } from './domRenderers';
 
 import { 
 	commentBoxEvents,
 	commentBoxSubmit,
+	goBackParticipe,
 	toggleMapMobile, 
 	mapsBtnClickEvent,
 	sidebarGoHome, 
@@ -87,18 +88,18 @@ docReady(() => {
 	/*
 	* Create DOM elements
 	*/
-
-	
-
 	const addPannels = new Promise (resolve => {
 		setTimeout(() => {
 			resolve(
 				createBaseInfo(getProjectData(state.baseLayerObj.id, bases), projetos), // sidebar first load
-				renderElement(`<a href="${window.location.origin}/arco-pinheiros-2" class="go-back-participe"><img src='${seta}' alt='Voltar'>Texto da consulta</a>`, '#info-warnings'),
 				createList(allLayersData, cores),
-				createMapsBtns(mapaData, "#mapas", "mapas-")
+				createMapsBtns(mapaData, "#mapas", "mapas-"),
+				createGoBackParticipe('go-back-participe', seta,'Texto da consulta')
 			)
 		},0)
+	})
+	.then(()=>{
+		goBackParticipe('go-back-participe', `${window.location.origin}/arco-pinheiros-2`)
 	})
 
 	const addCommentBox = apiGet('consultas', state.idConsulta) //fetch from api
@@ -106,10 +107,6 @@ docReady(() => {
 			const isOpen = Number(consulta.ativo) // consulta.ativo is '0' or '1'
 			state.consultaFetch = consulta
 			createCommentBox("baseInfo", state.projectSelected, isOpen)
-
-			// mapsBtnClickEvent(mapaData,"#mapas", appmap, allLayers, indicadoresBases, state, baseLayer)
-
-
 			return isOpen
 		})
 		.then(formState => {

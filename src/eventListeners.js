@@ -81,6 +81,24 @@ function toggleMapMobile() {
 	})
 }
 
+function goBackParticipe(id, url) {
+	let goBack = document.getElementById(id)
+	history.pushState({ initial: true }, url) // set initial state to the first load event
+
+	if(!goBack) throw new Error()
+
+	goBack.addEventListener('click', () => {
+		// console.log(`referrer: ${document.referrer}`)
+		// console.log(`url: ${url}`)
+		// console.log(history.state)
+		if(document.referrer === url){
+			window.history.go(-1)
+		}
+		else {
+			window.location = url
+		}
+	}, false)
+}
 /**
  * Observe if the map was deformed. Resets to the original proportion if changed
  * @param { Boolean } isPortrait The app window
@@ -179,7 +197,6 @@ function layersController(listCreated, projectLayers, layerColors, view, fitPadd
  */
 function mapsBtnClickEvent(buttonsContentArray, query, olMap, allLayers, baseIndicadores, state, baseLayer) {
 	const buttons = [...document.querySelector(query).children] // [li, li ...]
-		// .map(item => item)
 
 	buttons.forEach(item => {
 		item.addEventListener('click', event => {
@@ -440,6 +457,7 @@ function responseMessageListener(idBase, resType) {
 export { 
 	commentBoxEvents,
 	commentBoxSubmit,
+	goBackParticipe,
 	resetEventListener,
 	mapsBtnClickEvent,
 	toggleMapMobile, 

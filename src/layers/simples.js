@@ -26,7 +26,7 @@ function returnSimples(projetos, simples, app_url, cores){
 
 	const dashedLayers = []
 	const bigDots 	   = [ 'A21' ]
-	const filledLayers = [ 'A2', 'A3', 'A20', 'A22','A23','A24','A25','A26','A27','A28','A34', 'A35', 'A29', 'A30', 'A31', 'A32', 'A33', 'A40','A41','A42' ]
+	const filledLayers = [ 'A2', 'A3', 'A20', 'A22','A23','A24','A25','A26','A27','A28', 'A29', 'A30', 'A31', 'A32', 'A33', 'A40','A41','A42' ]
 	const biggerWidths = [ 'A6', 'A18' ]
 	const twoStrokes   = [ 
 		{ indicador: 'A7', type: 'butt', lineDash: [ 15 ] },
@@ -90,7 +90,7 @@ function returnSimples(projetos, simples, app_url, cores){
 							setTwoStrokes(
 								name, url, projeto, [
 									{ width: 10, color: rgba },
-									{ width: 8, color: [ 255, 255, 255, 1 ] },
+									{ width: 6, color: [ 255, 255, 255, 1 ] },
 								],
 								twoStrs.type,
 								twoStrs.lineDash

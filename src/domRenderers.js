@@ -267,6 +267,15 @@ function getFiles(indicador, projetos, baseId = false, indicadores = {}){
 }
 
 /**
+ * @param { String } id This element id
+ * @param { String } svg The icon svg as string
+ * @param { String } text The url text
+ */
+function createGoBackParticipe(id, svg, text) {
+	renderElement(`<a id=${id} class="go-back-participe"><img src='${svg}' alt='Voltar'>${text}</a>`, '#info-warnings')
+}
+
+/**
 * Create info box
 * @param { Object } data A dataset item 
 * @param { String } projectColor rgba color string
@@ -549,6 +558,7 @@ export {
 	parseNameToNumericalId,
 	setInitialState,
 	createCommentBox,
+	createGoBackParticipe,
 	commentBoxDisplayErrors, 
 	displayKmlInfo,
 	displayFetchingUI,
