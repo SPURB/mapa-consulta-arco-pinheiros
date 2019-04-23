@@ -21,7 +21,6 @@ const api = axios.create({
 	baseURL: process.env.API_URL,
 	timeout: 5000,
 	headers: {
-		'Content-Post': process.env.API_TOKEN,
 		'Content-Type': 'application/json'
 	}
 })
@@ -32,7 +31,7 @@ const api = axios.create({
  * @param { Number } id The consulta id 
  */
 function apiGet (table, id){
-	const url = `/${table}_v1/${id.toString()}`
+	const url = `/${table}/${id.toString()}`
 
 	return new Promise((resolve, reject) => {
 		api.get(url)
@@ -50,7 +49,7 @@ function apiGet (table, id){
  * @param { String } idBase The base of id name
   */
 function apiPost(table, data, idBase) {
-	const url = `${table}_v1/`
+	const url = `${table}/`
 	displayFetchingUI(true, '.button') //display fecthing elements
 
 	api.post(url, data)
