@@ -31,7 +31,7 @@ const api = axios.create({
  * @param { Number } id The consulta id 
  */
 function apiGet (table, id){
-	const url = `/${table}/${id.toString()}`
+	const url = `${table}/${id.toString()}`
 
 	return new Promise((resolve, reject) => {
 		api.get(url)

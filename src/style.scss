@@ -97,6 +97,7 @@ p {
 	#tabContent {
 		display: flex;
 		flex-direction: row;
+		max-height: 100%;
 		& > div {
 			max-height: calc(100% - 40px);
 			margin-top: 40px;
@@ -177,7 +178,7 @@ p {
 					text-align: left;
 					font-family: inherit;
 					color: inherit;
-					font-size: 1rem;
+					font-size: 1.2rem;
 					font-weight: bold;
 					span {
 						display: block;
@@ -392,7 +393,6 @@ p {
 			}
 			.project-description {
 				font-family: 'Georgia';
-				font-size: 1rem;
 				padding: 1.25rem;
 			}
 			.legendaWrap {
@@ -919,19 +919,6 @@ p {
 	position: absolute;
 	top: 2rem;
 	right: 2rem;
-	// font-size: 1rem;
-	// background-color: #EB5757;
-	// padding: 0 1rem;
-	// border-bottom: solid 1px gray;
-	// padding: .35rem;
-	// background-color: #F5F5F5;
-	// opacity: 0.32;
-	// cursor: pointer;
-	// transition: all ease-in .12s;
-	// &:hover {
-	// 	background-color:#BDBDBD;
-	// 	opacity: 1;
-	// }
 	.go-back-participe {
 		display: block;
 		font-size: 1rem;
@@ -944,21 +931,16 @@ p {
 		cursor: pointer;
 		text-transform: uppercase;
 		transition: all ease-in .1s;
-		// text-decoration: none;
-		// font-family: inherit;
-		// font-size: 0.75rem;
-		// text-transform: uppercase;
-		// color:#333;
-		// display: block;
-		// line-height: 2.2;
+		user-select: none;
+		-ms-user-select: none;
+		-moz-user-select: none;
+		-webkit-user-select: none;
 		img {
 			height: 1rem;
 			width: 1rem;
 			vertical-align: middle;
 			filter: invert(1) contrast(2);
 			margin-right: 8px;
-			// width: 13px;
-			// padding-right: 0.5rem;
 		}
 		&:hover {
 			background-color: #b84444;
@@ -974,7 +956,7 @@ p {
 		#infowrap {
 			background-color: #FFF;
 			max-height: calc(100% - 128px);
-			overflow: auto;
+			overflow: hidden;
 			box-shadow: 0 4px 4px rgba(0, 0, 0, .24);
 			width: 100vw;
 			max-width: unset;
@@ -1121,6 +1103,9 @@ p {
 					margin-right: 8px;
 				}
 			}
+		}
+		.response-message {
+			text-align: center;
 		}
 	}
 	body.mapLarge {
