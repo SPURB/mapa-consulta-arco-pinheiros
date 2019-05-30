@@ -29,7 +29,7 @@
 	"scripts": {
 		"start": "parcel ./index.html",
 		"watch": "parcel watch ./index.html",
-		"build": "parcel build --public-url . index.html && node data-src/tasks/copyPaste.js",
+		"build": "parcel build --public-url . index.html",
 		"files": "node data-src/start.js"
 	},
 	"devDependencies": {

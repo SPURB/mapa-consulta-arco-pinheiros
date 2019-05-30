@@ -17,7 +17,6 @@ const mapaData = mapasObj.default
  * Axios instance. Header setup
 */
 const api = axios.create({
-	// baseURL: 'http://spurbcp13343:7080/consultas-publicas-backend/', // please check the docs: https://spurb.github.io/consultas-publicas-backend/
 	baseURL: process.env.API_URL,
 	timeout: 5000,
 	headers: {

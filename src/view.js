@@ -107,6 +107,7 @@ docReady(() => {
 			const isOpen = Number(consulta.ativo) // consulta.ativo is '0' or '1'
 			state.consultaFetch = consulta
 			createCommentBox("baseInfo", state.projectSelected, isOpen)
+
 			return isOpen
 		})
 		.then(formState => {
