@@ -387,7 +387,7 @@ function createBaseInfo(data, projetos) {
 * @param { Boolean } isOpen Is this form open?
 * @returns { HTMLDivElement } Them commentable box
 */
-function createCommentBox (query, isProject, isOpen = true) {
+function createCommentBox (query, isProject, isOpen = false) {
 	if(!isOpen || isProject || document.body.contains(document.forms[query])) { return }
 
 	const emailPattern = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
